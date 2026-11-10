@@ -1,0 +1,28 @@
+<section class="comentarios" aria-labelledby="comentarios-titulo">
+  <h2 id="comentarios-titulo">Comentários</h2>
+  <p class="comentarios-intro">Deixe sua reflexão, dúvida ou testemunho sobre este texto. Os comentários aparecem depois de aprovados.</p>
+  {% if site.cusdisAppId %}
+  <div id="cusdis_thread"
+    data-host="https://cusdis.com"
+    data-app-id="{{ site.cusdisAppId }}"
+    data-page-id="{{ page.fileSlug }}"
+    data-page-url="{{ site.url }}{{ page.url }}"
+    data-page-title="{{ title }}"
+    data-theme="auto"></div>
+  <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+  <script defer src="https://cusdis.com/js/widget/lang/pt-BR.js"></script>
+  {% else %}
+  <form class="form-comentario" id="form-comentario">
+    <label for="c-nome">Seu nome</label>
+    <input id="c-nome" name="nome" required autocomplete="name">
+    <label for="c-texto">Seu comentário</label>
+    <textarea id="c-texto" name="comentario" rows="5" required></textarea>
+    <button class="botao principal" type="submit">Enviar comentário</button>
+    <p class="aviso" id="aviso-comentario" role="status"></p>
+  </form>
+  <script>
+  document.getElementById('form-comentario').addEventListener('submit',function(e){e.preventDefault();
+    document.getElementById('aviso-comentario').textContent='Prévia: os comentários começam a funcionar quando o site estiver no ar.';});
+  </script>
+  {% endif %}
+</section>

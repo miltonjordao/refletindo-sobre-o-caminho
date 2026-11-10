@@ -1,0 +1,10 @@
+<article class="faixa">
+  <a href="{{ post.url }}">
+    <img src="{{ post.data.imagem }}" alt="" loading="lazy">
+    <div class="faixa-texto">
+      <span class="data">{{ post.date | dataBR }}</span>
+      <h3>{{ post.data.title }}</h3>
+      <span class="ler">Ler texto →</span>
+    </div>
+  </a>
+</article>

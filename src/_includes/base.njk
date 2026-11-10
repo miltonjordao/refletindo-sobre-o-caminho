@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if title %}{{ title }} · {% endif %}{{ site.nome }}</title>
+  <meta name="description" content="{{ resumo or site.descricao }}">
+  <meta property="og:type" content="{% if resumo %}article{% else %}website{% endif %}">
+  <meta property="og:site_name" content="{{ site.nome }}">
+  <meta property="og:title" content="{{ title or site.nome }}">
+  <meta property="og:description" content="{{ resumo or site.descricao }}">
+  <meta property="og:image" content="{{ site.url }}{{ imagem or '/imagens/capa-do-site.jpg' }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/imagens/icone.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Pinyon+Script&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/estilo.css">
+</head>
+<body>
+  <header class="barra{% if page.url == "/" %} barra-inicial{% endif %}">
+    <a class="barra-marca" href="/"><span class="barra-blog">blog</span> <span class="barra-script">Refletindo</span> <span class="barra-caps">sobre o Caminho</span></a>
+    <nav class="menu">
+      <a href="/"{% if page.url == "/" %} aria-current="page"{% endif %}>Início</a>
+      <a href="/sobre/"{% if page.url == "/sobre/" %} aria-current="page"{% endif %}>Sobre o blog</a>
+    </nav>
+  </header>
+  <main>
+    {{ content | safe }}
+  </main>
+  <footer class="rodape">
+    <p class="rodape-marca"><span class="barra-script">Refletindo</span> <span class="barra-caps">sobre o Caminho</span></p>
+    <p class="rodape-autor">Textos de {{ site.autor }}</p>
+  </footer>
+</body>
+</html>

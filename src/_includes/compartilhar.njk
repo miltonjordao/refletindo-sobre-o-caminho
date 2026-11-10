@@ -1,0 +1,23 @@
+{% set link = site.url + page.url %}
+{% set texto = title + ' — ' + link %}
+<section class="compartilhar" aria-labelledby="compartilhar-titulo">
+  <h2 id="compartilhar-titulo">Compartilhe esta reflexão</h2>
+  <div class="botoes">
+    <a class="botao whatsapp" href="https://wa.me/?text={{ texto | urlencode }}" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="botao" href="https://www.facebook.com/sharer/sharer.php?u={{ link | urlencode }}" target="_blank" rel="noopener">Facebook</a>
+    <a class="botao" href="https://t.me/share/url?url={{ link | urlencode }}&text={{ title | urlencode }}" target="_blank" rel="noopener">Telegram</a>
+    <a class="botao" href="https://twitter.com/intent/tweet?url={{ link | urlencode }}&text={{ title | urlencode }}" target="_blank" rel="noopener">X (Twitter)</a>
+    <button class="botao" type="button" id="copiar-link" data-link="{{ link }}">Copiar link</button>
+  </div>
+  <p class="aviso" id="aviso-copia" role="status"></p>
+</section>
+<script>
+(function(){
+  var b=document.getElementById('copiar-link'),a=document.getElementById('aviso-copia');
+  if(navigator.share){var s=document.createElement('button');s.type='button';s.className='botao';s.textContent='Mais opções';
+    s.onclick=function(){navigator.share({title:document.title,url:b.dataset.link}).catch(function(){})};b.parentNode.appendChild(s);}
+  b.onclick=function(){var l=b.dataset.link;
+    (navigator.clipboard?navigator.clipboard.writeText(l):Promise.reject()).then(function(){a.textContent='Link copiado. Agora é só colar onde quiser.'})
+    .catch(function(){a.textContent='Copie este link: '+l})};
+})();
+</script>

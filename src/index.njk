@@ -1,0 +1,65 @@
+---
+layout: base.njk
+---
+<section class="abertura-viva" aria-labelledby="titulo-blog">
+  <canvas class="poeira" aria-hidden="true"></canvas>
+  <div class="abertura-conteudo">
+    <h1 id="titulo-blog" class="abertura-titulo">
+      <span class="titulo-script"><span class="titulo-blog">blog</span>Refletindo</span>
+      <span class="titulo-caps"><i></i>sobre o Caminho<i></i></span>
+    </h1>
+    <p class="abertura-verso">“Eu sou o caminho, a verdade e a vida.”<span>João 14:6</span></p>
+    <a class="abertura-convite" href="#caminhada">Comece a caminhada <span aria-hidden="true">↓</span></a>
+  </div>
+</section>
+
+<section class="caminhada" id="caminhada" aria-label="Reflexões">
+  <svg class="trilha" aria-hidden="true"><path/></svg>
+  {% for post in collections.posts %}
+  <article class="estacao{% if loop.index0 % 2 %} direita{% endif %}">
+    <span class="marco" aria-hidden="true"></span>
+    <a class="estacao-cartao" href="{{ post.url }}">
+      <div class="estacao-imagem"><img src="{{ post.data.imagem }}" alt="" loading="lazy"></div>
+      <span class="data">{{ post.date | dataBR }}</span>
+      <h2>{{ post.data.title }}</h2>
+      <span class="ler">Ler reflexão →</span>
+    </a>
+  </article>
+  {% endfor %}
+</section>
+
+<script>
+(function(){
+  /* poeira dourada flutuando na abertura */
+  var c=document.querySelector('.poeira'); if(!c) return;
+  var x=c.getContext('2d'), W, H, dpr=Math.min(window.devicePixelRatio||1,2), P=[];
+  var calmo=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tam(){W=c.offsetWidth;H=c.offsetHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);}
+  function nova(y){return{x:Math.random()*W,y:y==null?Math.random()*H:y,r:Math.random()*1.8+.3,v:Math.random()*.35+.08,d:(Math.random()-.5)*.25,a:Math.random()*.6+.2,f:Math.random()*6.28}}
+  tam(); for(var i=0;i<140;i++)P.push(nova());
+  function quadro(t){
+    x.clearRect(0,0,W,H);
+    for(var i=0;i<P.length;i++){var p=P[i];
+      if(!calmo){p.y-=p.v;p.x+=p.d+Math.sin(t/1800+p.f)*.15; if(p.y<-5){P[i]=nova(H+5);continue;}}
+      var luz=1-Math.min(1,Math.hypot(p.x-W*.5,p.y-H*.35)/(W*.6));
+      x.beginPath();x.arc(p.x,p.y,p.r,0,6.283);
+      x.fillStyle='rgba(255,220,150,'+(p.a*(.35+luz*.9)*(.7+.3*Math.sin(t/700+p.f)))+')';x.fill();}
+    if(!calmo)requestAnimationFrame(quadro);
+  }
+  requestAnimationFrame(quadro); window.addEventListener('resize',function(){tam();if(calmo)quadro(0)});
+})();
+(function(){
+  /* trilha dourada ligando as reflexões */
+  var sec=document.querySelector('.caminhada'),svg=sec&&sec.querySelector('.trilha'),path=svg&&svg.querySelector('path'); if(!path) return;
+  function desenha(){
+    var b=sec.getBoundingClientRect(), m=[].map.call(sec.querySelectorAll('.marco'),function(e){var r=e.getBoundingClientRect();return[r.left-b.left+r.width/2,r.top-b.top+r.height/2]});
+    svg.setAttribute('width',b.width);svg.setAttribute('height',b.height);svg.setAttribute('viewBox','0 0 '+b.width+' '+b.height);
+    if(!m.length)return;
+    var d='M'+m[0][0]+' 0 L'+m[0][0]+' '+m[0][1];
+    for(var i=1;i<m.length;i++){var a=m[i-1],z=m[i],my=(a[1]+z[1])/2,s=(i%2?1:-1)*Math.min(90,b.width*.08);
+      d+=' C'+(a[0]+s)+' '+my+' '+(z[0]-s)+' '+my+' '+z[0]+' '+z[1];}
+    var u=m[m.length-1]; d+=' L'+u[0]+' '+b.height; path.setAttribute('d',d);
+  }
+  desenha(); window.addEventListener('resize',desenha); window.addEventListener('load',desenha);
+})();
+</script>

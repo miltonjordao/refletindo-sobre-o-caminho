@@ -1,0 +1,27 @@
+---
+layout: base.njk
+---
+<article class="post">
+  <header class="post-faixa">
+    <img src="{{ imagem }}" alt="">
+    <div class="faixa-texto">
+      <span class="data">{{ page.date | dataBR }}</span>
+      <h1>{{ title }}</h1>
+      <p class="post-meta">{{ site.autor }}</p>
+    </div>
+  </header>
+  {% if versiculo %}<p class="post-versiculo">{{ versiculo }}</p>{% endif %}
+  <div class="post-corpo">
+    {{ content | safe }}
+  </div>
+  {% include "compartilhar.njk" %}
+  {% include "comentarios.njk" %}
+</article>
+<section>
+  <header class="secao-titulo"><h2>Leia também</h2></header>
+  <div class="faixas">
+    {% set outros = [] %}
+    {% for post in collections.posts %}{% if post.url != page.url %}{% set outros = (outros.push(post), outros) %}{% endif %}{% endfor %}
+    {% for post in outros.slice(0, 2) %}{% include "cartao.njk" %}{% endfor %}
+  </div>
+</section>

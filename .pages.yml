@@ -1,0 +1,24 @@
+media:
+  input: src/imagens
+  output: /imagens
+content:
+  - name: textos
+    label: Textos
+    type: collection
+    path: src/posts
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date]
+      primary: title
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: title, label: Título, type: string, required: true }
+      - { name: date, label: Data, type: date, required: true }
+      - { name: tema, label: Tema (opcional), type: string }
+      - { name: resumo, label: "Resumo (aparece quando compartilham no WhatsApp)", type: text }
+      - { name: imagem, label: Imagem de capa, type: image, required: true }
+      - { name: versiculo, label: Versículo de destaque, type: string }
+      - { name: body, label: Texto, type: rich-text }
