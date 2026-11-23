@@ -1,7 +1,21 @@
 import { HtmlBasePlugin } from "@11ty/eleventy";
+import notasDeRodape from "markdown-it-footnote";
 
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(HtmlBasePlugin);
+  // Notas de rodapé no estilo [^1] dentro dos textos
+  eleventyConfig.amendLibrary("md", (md) => {
+    md.use(notasDeRodape);
+    md.renderer.rules.footnote_caption = (tokens, idx) => String(tokens[idx].meta.id + 1);
+    md.renderer.rules.footnote_block_open = () =>
+      '<section class="notas" aria-label="Notas"><h2>Notas</h2>\n<ol class="notas-lista">\n';
+    md.renderer.rules.footnote_block_close = () => "</ol>\n</section>\n";
+    md.renderer.rules.footnote_anchor = (tokens, idx, options, env, slf) => {
+      let id = slf.rules.footnote_anchor_name(tokens, idx, options, env, slf);
+      if (tokens[idx].meta.subId > 0) id += ":" + tokens[idx].meta.subId;
+      return ' <a href="#fnref' + id + '" class="nota-voltar" aria-label="Voltar ao texto">↩</a>';
+    };
+  });
   eleventyConfig.addPassthroughCopy("src/imagens");
   eleventyConfig.addPassthroughCopy("src/estilo.css");
 
